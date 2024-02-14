@@ -21,6 +21,32 @@
  * SOFTWARE.
  */
 
+import { BigNumber } from 'bignumber.js';
+import { ethers } from 'ethers';
+import axios from 'axios';
+
+// Utility function to convert wei to Ether
+export function tokenHexStringToEther(hexTokenAmount: string): string {
+  const tokenAmount = new BigNumber(hexTokenAmount);
+  const ether = ethers.formatEther(tokenAmount.toString());
+  return ether;
+}
+
+// Utility function to convert Ether to USD
+export async function etherToUSD(etherAmount: string): Promise<number> {
+  const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
+  const usdRate = response.data.ethereum.usd;
+  const usdValue = new BigNumber(etherAmount).multipliedBy(usdRate).toNumber();
+  return usdValue;
+}
+
+// Utility function to format balance in USD
+export async function BalanceDisplayInUSD(rawBalance: string): Promise<string> {
+  const etherAmount = tokenHexStringToEther(rawBalance);
+  const USDAmount = await etherToUSD(etherAmount);
+  return `${USDAmount.toFixed(2)} $`;
+}
+
 export const formatBalance = (rawBalance: string) => {
   const balance = (parseInt(rawBalance) / 1000000000000000000).toFixed(2);
   return balance;

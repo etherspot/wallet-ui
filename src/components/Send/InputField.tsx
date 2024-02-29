@@ -21,39 +21,28 @@
  * SOFTWARE.
  */
 
-import { mainnetSupportedChains, testnetSupportedChains } from './chain';
+import React from 'react';
 
-export const formatBalance = (rawBalance: string) => {
-  const balance = (parseInt(rawBalance) / 1000000000000000000).toFixed(2);
-  return balance;
-};
+// InputField component that takes label, value, and onChange function as props
+const InputField: React.FC<{
+  label: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ label, value, onChange }) => (
+  <div className="mb-4">
+    {/* Label for the input */}
+    <label htmlFor="recipientAddress" className="mr-2">
+      {label}
+    </label>
+    {/* Input textbox with specified css */}
+    <input
+      id="recipientAddress"
+      type="text"
+      value={value}
+      onChange={onChange}
+      className="block w-1/2 rounded-md border-1 border-gray-300 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+    />
+  </div>
+);
 
-export const formatChainAsNum = (chainIdHex: string) => {
-  const chainIdNum = parseInt(chainIdHex);
-  return chainIdNum;
-};
-
-export const truncateAddress = (addr: string) => {
-  return `${addr.substring(0, 8)}...`;
-};
-
-export const getExplorerUrl = (chainId: number): string | null => {
-  const mainnetChain = mainnetSupportedChains.find((chain: { chainId: number }) => chain.chainId === chainId);
-  if (mainnetChain) {
-    return mainnetChain.explorerUrl;
-  }
-
-  const testnetChain = testnetSupportedChains.find((chain: { chainId: number }) => chain.chainId === chainId);
-  if (testnetChain) {
-    return testnetChain.explorerUrl;
-  }
-
-  return null;
-};
-
-export const openTxExplorer = (txHash: string, selectedNetwork: number) => {
-  if (txHash) {
-    const explorerUrl = getExplorerUrl(selectedNetwork);
-    explorerUrl && window.open(`${explorerUrl}${txHash}`, '_blank');
-  }
-};
+export default InputField;

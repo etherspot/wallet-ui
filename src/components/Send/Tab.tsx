@@ -21,39 +21,20 @@
  * SOFTWARE.
  */
 
-import { mainnetSupportedChains, testnetSupportedChains } from './chain';
+import React from 'react';
 
-export const formatBalance = (rawBalance: string) => {
-  const balance = (parseInt(rawBalance) / 1000000000000000000).toFixed(2);
-  return balance;
-};
-
-export const formatChainAsNum = (chainIdHex: string) => {
-  const chainIdNum = parseInt(chainIdHex);
-  return chainIdNum;
-};
-
-export const truncateAddress = (addr: string) => {
-  return `${addr.substring(0, 8)}...`;
-};
-
-export const getExplorerUrl = (chainId: number): string | null => {
-  const mainnetChain = mainnetSupportedChains.find((chain: { chainId: number }) => chain.chainId === chainId);
-  if (mainnetChain) {
-    return mainnetChain.explorerUrl;
-  }
-
-  const testnetChain = testnetSupportedChains.find((chain: { chainId: number }) => chain.chainId === chainId);
-  if (testnetChain) {
-    return testnetChain.explorerUrl;
-  }
-
-  return null;
-};
-
-export const openTxExplorer = (txHash: string, selectedNetwork: number) => {
-  if (txHash) {
-    const explorerUrl = getExplorerUrl(selectedNetwork);
-    explorerUrl && window.open(`${explorerUrl}${txHash}`, '_blank');
-  }
-};
+// Tab component for displaying a single tab as of now
+const Tab: React.FC<{ selectedTab: string; handleTabClick: (tabName: string) => void }> = ({
+  selectedTab,
+  handleTabClick,
+}) => (
+  <div className="flex mb-4">
+    <button
+      className={`w-1/2 py-2 focus:outline-none rounded-md ${selectedTab === 'Native Asset' ? 'bg-purple-300 text-black' : 'text-blue-500'}`}
+      onClick={() => handleTabClick('Native Asset')}
+    >
+      Native Asset
+    </button>
+  </div>
+);
+export default Tab;

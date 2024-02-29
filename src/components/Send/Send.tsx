@@ -23,10 +23,18 @@
 
 import React from 'react';
 
-const Send: React.FC = () => (
-  <div>
-    <h1>Send Component here</h1>
-  </div>
-);
+// Components
+import SendTokenUI from './SendTokenUI';
+
+// Send component for sending tokens
+const Send = () => {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-white-600">
+      <div className="max-w-md w-full p-6 bg-purple border bg-purple-500 border-gray-300 rounded-lg shadow-md">
+        <SendTokenUI />
+      </div>
+    </div>
+  );
+};
 
 export default Send;
